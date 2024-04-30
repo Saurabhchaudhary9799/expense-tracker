@@ -17,14 +17,13 @@ import Signup from "../components/Authentication/Signup";
 import { useNavigate } from "react-router-dom";
 const RegisterPage = () => {
   const navigate = useNavigate();
-    useEffect(()=>{
+   
          const user= localStorage.getItem('userInfo');
          if(user){
             navigate('/dashboard');
          }
-    },[])
-
-  return (
+   
+return (
     <>
       <Flex
         sx={{

@@ -3,11 +3,18 @@ import React, { useEffect } from 'react'
 
 import Sidebar from '../components/Sidebar/Sidebar';
 import DescriptionBox from '../components/DescriptionBox/DescriptionBox';
+import { useNavigate } from 'react-router-dom';
 
 
 const HomePage = () => {
+  const navigate = useNavigate();
 
-
+  useEffect(()=>{
+      const userInfo = localStorage.getItem('userInfo');
+      if(!userInfo){
+          navigate("/");
+      }
+  })
    
 
   return (

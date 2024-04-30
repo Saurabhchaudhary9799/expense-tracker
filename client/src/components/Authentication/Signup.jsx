@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FormControl, FormLabel, Input, VStack ,Button } from "@chakra-ui/react";
 import {motion} from 'framer-motion'
 
@@ -12,24 +12,31 @@ const Signup = () => {
    const [confirmPassword , setConfirmPassword] = useState('');
 
     const navigate = useNavigate();
-   const handleSignup = async () =>{
-    try {
-        const config = {
-            headers: {
-              'Content-Type': 'application/json'
-            }}
-        const  {data} = await axios.post('http://127.0.0.1:8000/api/v1/users/signup',{
-            name ,email,password,confirmPassword
-        },config);
-
-        console.log(data);
-        localStorage.setItem('userInfo',JSON.stringify(data))
-        navigate('/dashboard');
-        
-    } catch (error) {
-        console.log(error);
-    }
-   }
+    const handleSignup = async () =>{
+      try {
+          const config = {
+              headers: {
+                'Content-Type': 'application/json'
+              }}
+          const  {data} = await axios.post('http://127.0.0.1:8000/api/v1/users/signup',{
+              name ,email,password,confirmPassword
+          },config);
+  
+          if(data){
+            localStorage.setItem('userInfo',JSON.stringify(data))
+            navigate('/dashboard');
+            
+          }
+          
+      } catch (error) {
+          console.log(error);
+      }
+     } 
+  useEffect(()=>{
+    
+     handleSignup();
+  },[])
+   
   return (
     <VStack p='2' spacing='4'>
         <FormControl isRequired>

@@ -3,7 +3,10 @@ const dotenv = require('dotenv');
 const morgan = require('morgan');
 const mongoose = require('mongoose')
 const userRoutes = require("./Routes/userRoutes");
-const categoryRoutes = require("./Routes/categoryRoutes")
+const categoryRoutes = require("./Routes/categoryRoutes");
+const expenseRoutes = require("./Routes/expenseRoutes");
+
+
 const cors = require('cors');
 
 const app = express();
@@ -22,11 +25,15 @@ mongoose.connect(DB).then((con) => {
 app.use(express.json());
 app.use(morgan('dev'));
 app.use(cors());
+
+
 // Routes 
 app.use('/api/v1/users' , userRoutes);
 app.use('/api/v1/category',categoryRoutes);
+app.use("/api/v1/expenses",expenseRoutes);
 
 
+// Serevr is  started at defined port
 const port = process.env.PORT || 8000;
 
 app.listen(port , (req , res) => {
