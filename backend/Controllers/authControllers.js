@@ -4,13 +4,39 @@ const jwt = require("jsonwebtoken")
 const User = require('../modals/userModal')
 const AppError = require('../utils/appError')
 const bcrypt = require('bcryptjs')
+const UserVerfication = require('../modals/userVerification');
+const nodemailer = require('nodemailer')
 
+const { sendVerificationEmail } = require('../utils/verificationEmail');
+
+
+//nodemailer stuff
+// let transporter = nodemailer.createTransport({
+//    service:"gmail",
+//    auth:{
+//     user:process.env.AUTH_EMAIL,
+//     pass:process.env.AUTH_PASS,
+//    },
+//    connectionTimeout: 60000, // 20 seconds
+// })
+
+// transporter.verify((error ,success) =>{
+//   if(error){
+//     console.log(error);
+//   }else{
+//     console.log("Ready for message");
+//     console.log(success);
+//   }
+// })
+
+// generate jwt token
 const  signToken = (id) =>{
     return  jwt.sign({id} , process.env.JWT_SECRET , {
         expiresIn:process.env.JWT_EXPIRES_IN
     })
 }
 
+//send token via cookie to client 
 const createSendToken = (user ,statusCode , res) =>{
     const token = signToken(user.id);
     const cookieOption ={
@@ -39,8 +65,7 @@ const login = asyncHandler(async( req ,res ,next) =>{
     return new AppError('Please provide email and password',400)
    }
 
-   const user = await User.findOne({email}).select("+password");
-   
+   const user = await User.findOne({email}).select("+password").populate({path:"categories"});
    if (!user) {
     return next(new AppError("User is not found", 400));
   }
@@ -53,13 +78,16 @@ const login = asyncHandler(async( req ,res ,next) =>{
    createSendToken(user , 200 , res);
 } )
 
-const signup = asyncHandler(async( req ,res ,next) =>{
-     const newUser =  await User.create(req.body);
-     console.log(newUser);
-     createSendToken(newUser , 201 , res);
+// const signupVerification = asyncHandler(async( req ,res ,next) =>{
+//      const newUser =  await User.create({...req.body,verified:false});
+//      sendVerificationEmail(newUser , res);
+//     //  createSendToken(newUser , 201 , res);
+//  } )
 
- } )
-
+ const signup = asyncHandler(async( req ,res ,next) =>{
+  const newUser =  await User.create(req.body);
+  createSendToken(newUser , 201 , res);
+} )
 
  const protect = asyncHandler(async(req ,res,next) =>{
     let token ;
@@ -94,4 +122,4 @@ const signup = asyncHandler(async( req ,res ,next) =>{
  });
 
 
- module.exports={login ,signup,protect}
+ module.exports={login ,signup,protect }

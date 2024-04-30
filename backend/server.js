@@ -9,6 +9,9 @@ const cors = require('cors');
 const app = express();
 dotenv.config();
 
+app.set('view engine', 'ejs');
+app.set('views', './views');
+
 // Database Connection 
 const DB = process.env.DATABASE_LOCAL;
 mongoose.connect(DB).then((con) => {

@@ -16,10 +16,7 @@ const getAllUsers = asyncHandler( async (req, res,next) => {
         users
       })
  
-    res.status(400).json({
-        status:"fail",
-        message:error
-      })
+   
  
 });
 
@@ -32,14 +29,22 @@ const createUser = asyncHandler(async(req, res,next) =>{
             user
        })
   
-        res.status(400).json({
-            status:"fail",
-            message:error
-       })
+      
    
 })
 
+const getUser = asyncHandler(async (req, res,next) =>{
+      const user = await User.findById(req.params.id).populate({
+        path: "categories",
+        select: "-__v -createdAt -updatedAt",
+      });
+  
+
+      res.status(200).json({
+        status:"success",
+        user
+      })
+})
 
 
-
-module.exports = {getAllUsers , createUser };
+module.exports = {getAllUsers , createUser ,getUser};

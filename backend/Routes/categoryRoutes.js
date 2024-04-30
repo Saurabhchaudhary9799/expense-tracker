@@ -4,6 +4,12 @@ const { protect } = require('../Controllers/authControllers');
 
 const router = express()
 
-router.route("/").get( getAllCategory).post(protect, createCategory);
+//   POST /user/abcd567/categories
+//   GET  /user/abcd567/categories
+
+//   GET  /user/abcd567/categories/123456789
+
+router.use(protect);
+router.route("/").get(getAllCategory).post(createCategory);
 
 module.exports = router;

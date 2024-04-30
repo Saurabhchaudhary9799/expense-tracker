@@ -34,6 +34,7 @@ const userSchema = new mongoose.Schema(
         message: "passwords are not the same",
       },
     },
+    verified:Boolean,
     categories:[
       {
         type: Schema.Types.ObjectId,

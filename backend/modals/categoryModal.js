@@ -7,6 +7,11 @@ const categorySchema =  new mongoose.Schema({
         required:[true,'Category must have a name'],
         unique:true,
         trim:true,
+    },
+    active:{
+        type:Boolean,
+        default:true,
+        select:false
     }
 },{timestamps:true});
 
