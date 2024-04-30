@@ -42,8 +42,17 @@ const userSchema = new mongoose.Schema(
       },
     ],
   },
-  { timestamps: true }
+  {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+  }
 );
+
+userSchema.virtual('expenses',{
+  ref:'Expense',
+  foreignField:'user',
+  localField:'_id'
+});
 
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
@@ -54,14 +63,18 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-// userSchema.pre(/^find/ , function(next){
-//   this.populate({
-//     path: "categories",
-//     select: "-__v -passwordChangedAt",
-//   })
+userSchema.pre(/^find/ , function(next){
+  this.populate({
+    path: "categories",
+    select: "-__v -passwordChangedAt ",
+  }) .populate({
+      path: "expenses",
+      select: "-__v  ",
+    });
 
-//   next();
-// })
+  
+  next();
+})
 
 const User = mongoose.model("User", userSchema);
 

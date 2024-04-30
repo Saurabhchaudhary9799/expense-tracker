@@ -34,12 +34,11 @@ const createUser = asyncHandler(async(req, res,next) =>{
 })
 
 const getUser = asyncHandler(async (req, res,next) =>{
-      const user = await User.findById(req.params.id).populate({
-        path: "categories",
-        select: "-__v -createdAt -updatedAt",
-      });
-  
-
+      const user = await User.findById(req.params.id);
+      if(!user){
+        return next(new AppError("No user found with that id",404))
+      }
+      
       res.status(200).json({
         status:"success",
         user
