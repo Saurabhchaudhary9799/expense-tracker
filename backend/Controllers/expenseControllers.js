@@ -8,16 +8,16 @@ console.log(req.user.id);
     {
       $match:{user: new mongoose.Types.ObjectId(`${req.user.id}`)},
     },
-    {
-      $group: {
-        _id: {
-          $dateToString: { format: "%Y-%m-%d", date: "$createdAt" }
-        },
+    // {
+    //   $group: {
+    //     _id: {
+    //       $dateToString: { format: "%Y-%m-%d", date: "$createdAt" }
+    //     },
       
-        count: { $sum: 1 }
-      }
-    },
-    { $sort: { _id: 1 } } 
+    //     count: { $sum: 1 }
+    //   }
+    // },
+    // { $sort: { _id: 1 } } 
    ])
 
    res.status(200).json({
