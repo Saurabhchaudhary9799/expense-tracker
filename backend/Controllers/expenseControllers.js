@@ -3,28 +3,50 @@ const Expense = require("../modals/expenseModal");
 const mongoose = require("mongoose");
 
 exports.getAllExpense = asyncHandler(async(req,res,next)=>{
-console.log(req.user.id);
+const date = new Date();
+const targetMonth = date.getMonth()+1; 
+console.log(targetMonth);
    const expenses = await Expense.aggregate([
+    {
+      $addFields: {
+        expenseMonth: { $month: "$createdAt" } 
+      }
+    },
     {
       $match:{user: new mongoose.Types.ObjectId(`${req.user.id}`)},
     },
-    // {
-    //   $group: {
-    //     _id: {
-    //       $dateToString: { format: "%Y-%m-%d", date: "$createdAt" }
-    //     },
+    {
+      $match: {
+        expenseMonth: { $eq: targetMonth } 
+      }
+    },
+    
+    {
+      $group: {
+        _id: {
+          $dateToString: { format: "%Y-%m-%d", date: "$createdAt" }
+        },
       
-    //     count: { $sum: 1 }
-    //   }
-    // },
-    // { $sort: { _id: 1 } } 
+        count: { $sum: 1 },
+        expense: { $sum: "$value" } ,
+        balance: { $subtract: ["$field1", "$field2"] },
+        result:{ $push: "$$ROOT" }
+        
+      }
+    },
+   
+    { $sort: { _id: 1 } } 
    ])
 
+   const monthlyIncome = req.user.income;
+   const balance =   monthlyIncome - expenses.expense;
+   console.log(balance);
    res.status(200).json({
     status:"success",
     expenses
    })
 })
+
 
 exports.createExpense = asyncHandler(async (req, res, next) => {
   const category_id = new mongoose.Types.ObjectId(req.body.category);

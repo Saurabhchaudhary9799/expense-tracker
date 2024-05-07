@@ -34,6 +34,10 @@ const userSchema = new mongoose.Schema(
         message: "passwords are not the same",
       },
     },
+    income:{
+      type:Number,
+      default:0,
+    },
     verified:Boolean,
     categories:[
       {

@@ -13,19 +13,17 @@ export const UserProvider = ({children}) =>{
     if (storedUser) {
      
       storedUser = JSON.parse(storedUser);
-     
+      
       setCurrentUser(storedUser.user);
+     
     } 
   }, []);
 
   // Function to update user and store in localStorage
-  const updateUser = newUser => {
-    setCurrentUser(newUser);
-    localStorage.setItem('userInfo', JSON.stringify(newUser));
-  };
+
 
   return (
-    <UserContext.Provider value={{ currentUser, updateUser }}>
+    <UserContext.Provider value={{ currentUser }}>
       {children}
     </UserContext.Provider>
   );

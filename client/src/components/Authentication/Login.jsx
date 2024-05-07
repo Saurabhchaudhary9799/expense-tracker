@@ -1,5 +1,5 @@
 import { FormControl, FormLabel, Input, VStack ,Button } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {motion} from "framer-motion"
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
@@ -11,25 +11,28 @@ const Login = () => {
     
  
      const navigate = useNavigate();
-    const handleLogin = async () =>{
-     try {
-         const config = {
-             headers: {
-               'Content-Type': 'application/json'
-             }}
-         const  {data} = await axios.post('http://127.0.0.1:8000/api/v1/users/login',{
-             email,password
-         },config);
- 
-         console.log(data);
-         localStorage.setItem('userInfo',JSON.stringify(data))
-         navigate('/dashboard');
-         
-     } catch (error) {
-         console.log(error);
-     }
-    }
-
+     
+      const handleLogin = async () =>{
+        try {
+            const config = {
+                headers: {
+                  'Content-Type': 'application/json'
+                }}
+            const  {data} = await axios.post('http://127.0.0.1:8000/api/v1/users/login',{
+                email,password
+            },config);
+    
+            console.log(data);
+            localStorage.setItem('userInfo',JSON.stringify(data))
+            navigate('/dashboard');
+            
+        } catch (error) {
+            console.log(error);
+        }
+       }
+     
+     
+    
 
   return (
     <VStack  p='2' spacing='4'>

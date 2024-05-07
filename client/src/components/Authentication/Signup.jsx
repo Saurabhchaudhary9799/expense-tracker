@@ -32,10 +32,7 @@ const Signup = () => {
           console.log(error);
       }
      } 
-  useEffect(()=>{
-    
-     handleSignup();
-  },[])
+ 
    
   return (
     <VStack p='2' spacing='4'>

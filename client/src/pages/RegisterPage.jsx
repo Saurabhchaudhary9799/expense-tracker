@@ -18,10 +18,13 @@ import { useNavigate } from "react-router-dom";
 const RegisterPage = () => {
   const navigate = useNavigate();
    
-         const user= localStorage.getItem('userInfo');
-         if(user){
-            navigate('/dashboard');
-         }
+  useEffect(()=>{
+    const user= localStorage.getItem('userInfo');
+    if(user){
+       navigate('/dashboard');
+    }
+  })
+         
    
 return (
     <>
