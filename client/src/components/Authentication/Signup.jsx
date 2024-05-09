@@ -22,11 +22,11 @@ const Signup = () => {
               name ,email,password,confirmPassword
           },config);
   
-          if(data){
+      
             localStorage.setItem('userInfo',JSON.stringify(data))
             navigate('/dashboard');
             
-          }
+         
           
       } catch (error) {
           console.log(error);

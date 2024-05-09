@@ -6,7 +6,7 @@ const UserContext = createContext();
 
 export const UserProvider = ({children}) =>{
     const [currentUser, setCurrentUser] = useState('');
-
+   
   useEffect(() => {
     // Retrieve user from localStorage
     let storedUser = localStorage.getItem('userInfo');
@@ -19,6 +19,7 @@ export const UserProvider = ({children}) =>{
     } 
   }, []);
 
+  
   // Function to update user and store in localStorage
 
 

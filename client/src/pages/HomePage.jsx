@@ -14,7 +14,7 @@ const HomePage = () => {
       if(!userInfo){
           navigate("/");
       }
-  })
+  },[])
    
 
   return (

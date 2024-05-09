@@ -6,13 +6,14 @@ const User = require("../modals/userModal");
 const getAllCategory = asyncHandler(async (req, res, next) => {
 
   
-  const categories = await Category.find();
-  
+  const categories = req.user.categories;
+  // const categories = await Category.find();
+  console.log(categories);
   res.status(201).json({
     status: "success",
     message: "Category is successfully created",
     results: categories.length,
-    data: categories,
+    doc: categories,
   });
 });
 
